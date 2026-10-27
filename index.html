@@ -1,0 +1,635 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Chromebook Quick Fixes</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=IBM+Plex+Mono:wght@500;600&family=Source+Sans+3:ital,wght@0,400;0,600;1,400&display=swap">
+
+<style>
+/* Layout: a sticky search/filter bar over category-grouped fix cards, two columns on desktop and one on phone. */
+/* Committed to a single light treatment: paper-white ground, hairline rules, no cards. */
+:root{
+  color-scheme:light;
+  --bg:#FFFFFF;
+  --surface:#FFFFFF;
+  --surface-2:#F6F8F6;
+  --fg:#1A211E;
+  --fg-muted:#68766F;
+  --accent:#10553F;
+  --accent-deep:#0A3A2B;
+  --accent-wash:#ECF2EE;
+  --gold:#A87B33;
+  --gold-line:#C8A676;
+  --rule:#E4E9E5;
+  --kbd-face:#FFFFFF;
+  --kbd-edge:#CBD3CF;
+  --kbd-shadow:#B0BBB6;
+  --focus:#10553F;
+
+  --font-display:"Archivo","Helvetica Neue",Arial,sans-serif;
+  --font-body:"Source Sans 3","Helvetica Neue",Arial,sans-serif;
+  --font-mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+}
+
+*{box-sizing:border-box}
+body{
+  margin:0; background:var(--bg); color:var(--fg);
+  font-family:var(--font-body); font-size:16px; line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{
+  max-width:1060px; margin:0 auto;
+  padding-left:max(16px, env(safe-area-inset-left, 0px));
+  padding-right:max(16px, env(safe-area-inset-right, 0px));
+}
+a{color:var(--accent); text-underline-offset:3px; text-decoration-color:var(--gold-line)}
+:focus-visible{outline:2px solid var(--focus); outline-offset:2px; border-radius:3px}
+
+/* ---------- MASTHEAD ---------- */
+.masthead .wrap{padding-block:34px 22px; display:flex; gap:20px; align-items:flex-start}
+.mh-copy{min-width:0}
+.school{
+  font-family:var(--font-mono); font-size:11px; font-weight:600;
+  letter-spacing:.18em; text-transform:uppercase; color:var(--gold);
+}
+h1{
+  font-family:var(--font-display); font-weight:700; letter-spacing:-.025em;
+  font-size:clamp(28px,5.4vw,42px); line-height:1.04; margin:6px 0 8px;
+  color:var(--accent-deep); text-wrap:balance;
+}
+.tagline{color:var(--fg-muted); max-width:56ch; margin:0; font-size:17px}
+
+/* ---------- TOOLBAR ---------- */
+.toolbar{
+  position:sticky; top:env(safe-area-inset-top, 0px); z-index:9;
+  background:var(--bg); border-bottom:1px solid var(--rule);
+}
+body::before{
+  content:""; position:fixed; inset:0 0 auto; height:env(safe-area-inset-top, 0px);
+  z-index:10; background:var(--bg);
+}
+.toolbar .wrap{padding-block:14px}
+.searchline{display:flex; gap:10px; align-items:center}
+.searchbox{position:relative; flex:1; min-width:0}
+.searchbox svg{
+  position:absolute; left:13px; top:50%; transform:translateY(-50%);
+  width:17px; height:17px; color:var(--fg-muted); pointer-events:none;
+}
+#q{
+  width:100%; font-family:var(--font-body); font-size:16px; color:var(--fg);
+  background:var(--surface); border:1px solid var(--kbd-edge); border-radius:7px;
+  padding:11px 86px 11px 38px;
+}
+#q::placeholder{color:var(--fg-muted)}
+#q:focus{border-color:var(--accent); outline:none; box-shadow:0 0 0 3px var(--accent-wash)}
+.slash{
+  position:absolute; right:11px; top:50%; transform:translateY(-50%);
+  display:flex; gap:5px; align-items:center; pointer-events:none;
+}
+#clear{
+  position:absolute; right:9px; top:50%; transform:translateY(-50%);
+  border:0; background:var(--surface-2); color:var(--fg-muted);
+  font-family:var(--font-body); font-size:13px; padding:5px 10px;
+  border-radius:6px; cursor:pointer;
+}
+#clear:hover{color:var(--fg)}
+
+.chips{display:flex; flex-wrap:wrap; gap:7px; margin-top:11px; align-items:center}
+.chip{
+  font-family:var(--font-mono); font-size:11.5px; font-weight:600;
+  letter-spacing:.07em; text-transform:uppercase;
+  background:transparent; color:var(--fg-muted);
+  border:1px solid var(--rule); border-radius:999px;
+  padding:6px 13px; cursor:pointer; white-space:nowrap;
+}
+.chip:hover{color:var(--fg); border-color:var(--kbd-edge)}
+.chip[aria-pressed="true"]{
+  background:var(--accent); border-color:var(--accent); color:#fff;
+}
+.count{
+  margin-left:auto; font-family:var(--font-mono); font-size:11.5px;
+  color:var(--fg-muted); font-variant-numeric:tabular-nums; white-space:nowrap;
+}
+
+/* ---------- SECTIONS ---------- */
+main .wrap{padding-block:30px 10px}
+.section{margin-bottom:34px}
+.section-head{display:flex; align-items:center; gap:12px; margin-bottom:14px}
+.section-head h2{
+  font-family:var(--font-mono); font-size:12px; font-weight:600;
+  letter-spacing:.17em; text-transform:uppercase; color:var(--accent);
+  margin:0; white-space:nowrap;
+}
+.section-head .line{flex:1; height:1px; background:var(--rule)}
+
+.cards{display:grid; grid-template-columns:1fr; gap:26px; align-items:start}
+@media (min-width:880px){
+  .cards{grid-template-columns:1fr 1fr; column-gap:48px; row-gap:30px}
+  .fix.wide{grid-column:1 / -1}
+  .split{grid-template-columns:1.05fr 1fr!important; gap:28px!important}
+  .split > *{min-width:0}
+  .split .figure{margin-top:2px}
+}
+
+.fix{border-top:1px solid var(--rule); padding-top:15px; min-width:0}
+.fix-head{display:flex; gap:10px; align-items:flex-start; margin-bottom:11px}
+.fix-head > svg{width:18px; height:18px; color:var(--accent); flex:none; margin-top:3px}
+.fix h3{
+  font-family:var(--font-display); font-weight:600; letter-spacing:-.015em;
+  font-size:18px; line-height:1.25; margin:0; color:var(--accent-deep);
+  text-wrap:balance;
+}
+.sym{margin:4px 0 0; font-size:14.5px; line-height:1.45; color:var(--fg-muted)}
+
+.fix ol{margin:0; padding:0; list-style:none; counter-reset:s}
+.fix ol li{
+  counter-increment:s; position:relative; padding-left:26px; margin-bottom:9px;
+  font-size:15.5px; line-height:1.52;
+}
+.fix ol li:last-child{margin-bottom:0}
+.fix ol li::before{
+  content:counter(s) "."; position:absolute; left:0; top:0;
+  color:var(--gold); font-family:var(--font-mono);
+  font-size:12.5px; font-weight:600; line-height:1.9;
+}
+.fix p.lead{margin:0 0 9px; font-size:15.5px; line-height:1.52}
+.note{
+  margin-top:13px; padding-left:12px; border-left:2px solid var(--gold-line);
+  font-size:14.5px; line-height:1.48; color:var(--fg-muted);
+}
+.note strong{color:var(--fg); font-weight:600}
+.fix b, .fix strong{font-weight:600}
+
+/* ---------- KEYCAPS ---------- */
+kbd{
+  display:inline-flex; align-items:center; gap:4px; vertical-align:baseline;
+  font-family:var(--font-mono); font-size:12.5px; font-weight:600; letter-spacing:.01em;
+  color:var(--fg); background:var(--kbd-face);
+  border:1px solid var(--kbd-edge); border-bottom:2px solid var(--kbd-shadow);
+  border-radius:5px; padding:1px 6px 2px; margin:0 1px; white-space:nowrap;
+}
+kbd svg{width:12px; height:12px}
+.plus{color:var(--fg-muted); font-family:var(--font-mono); font-size:12px; margin:0 2px}
+
+/* ---------- FIGURES ---------- */
+.figure{margin-top:14px}
+.figure svg{width:100%; max-width:430px; height:auto; display:block}
+.figcap{margin:8px 0 0; font-size:13.5px; line-height:1.45; color:var(--fg-muted)}
+.figcap b{color:var(--fg); font-weight:600}
+.shelf{display:flex; gap:12px; align-items:center; margin-top:14px; flex-wrap:wrap}
+.shelf svg{flex:none}
+.shelf p{margin:0; font-size:13.5px; line-height:1.45; color:var(--fg-muted); min-width:180px; flex:1}
+.shelf b{color:var(--fg); font-weight:600}
+
+/* ---------- SHORTCUTS ---------- */
+.shortcuts{border-top:1px solid var(--rule)}
+.shortcuts .wrap{padding-block:26px}
+.shortcuts h2{
+  font-family:var(--font-mono); font-size:12px; font-weight:600;
+  letter-spacing:.17em; text-transform:uppercase; color:var(--accent); margin:0 0 14px;
+}
+.sc-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(215px,1fr)); gap:18px}
+.sc .ks{margin-bottom:5px; white-space:nowrap}
+.sc span{display:block; font-size:14px; color:var(--fg-muted); line-height:1.4}
+
+/* ---------- HELP ---------- */
+.help{border-top:1px solid var(--rule)}
+.help .wrap{padding-block:30px}
+.help-grid{display:grid; grid-template-columns:1fr; gap:26px}
+@media (min-width:760px){.help-grid{grid-template-columns:1fr 1fr; gap:40px}}
+.help h2{
+  font-family:var(--font-mono); font-size:12px; font-weight:600;
+  letter-spacing:.17em; text-transform:uppercase; color:var(--accent); margin:0 0 12px;
+}
+.who{display:flex; gap:11px; margin-bottom:11px; font-size:15.5px; line-height:1.5}
+.who:last-child{margin-bottom:0}
+.who dt{font-weight:600; flex:none; width:98px; color:var(--fg)}
+.who dd{margin:0; color:var(--fg-muted); min-width:0}
+.links{margin:0; padding:0; list-style:none; font-size:15.5px}
+.links li{margin-bottom:9px; line-height:1.5}
+.links li:last-child{margin-bottom:0}
+.links span{display:block; color:var(--fg-muted); font-size:14px}
+.links a{word-break:break-word}
+
+/* ---------- FOOTER ---------- */
+footer{border-top:1px solid var(--rule)}
+footer .wrap{
+  padding-block:20px 26px; display:flex; flex-wrap:wrap; gap:8px 24px;
+  align-items:baseline; justify-content:space-between;
+  font-size:13px; color:var(--fg-muted);
+}
+.motto{font-family:var(--font-mono); font-size:11.5px; letter-spacing:.1em; text-transform:uppercase; color:var(--gold)}
+
+/* ---------- EMPTY ---------- */
+#empty{
+  display:none; text-align:center; padding:46px 0 56px; color:var(--fg-muted);
+}
+#empty.on{display:block}
+#empty strong{display:block; font-family:var(--font-display); font-size:20px; color:var(--fg); margin-bottom:6px; font-weight:600}
+mark{background:rgba(190,149,88,.3); color:inherit; border-radius:2px; padding:0 1px}
+
+@media (prefers-reduced-motion: reduce){*{animation:none!important; transition:none!important}}
+</style>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+  <g id="i-power"><path d="M12 2.6v9.2"/><path d="M6.8 5.6a7.4 7.4 0 1 0 10.4 0"/></g>
+  <g id="i-refresh"><path d="M20.2 12a8.2 8.2 0 1 1-2.5-5.9"/><polyline points="20.4 3.4 20.4 10 13.8 10"/></g>
+  <g id="i-keyboard"><rect x="2.2" y="5.6" width="19.6" height="12.8" rx="2.2"/><path d="M6 9.4h.01M9.4 9.4h.01M12.8 9.4h.01M16.2 9.4h.01M18.8 9.4h.01M6 12.6h.01M9.4 12.6h.01M12.8 12.6h.01M16.2 12.6h.01M18.8 12.6h.01" stroke-linecap="round" stroke-width="2.6"/><path d="M7.6 15.6h8.8" stroke-linecap="round"/></g>
+  <g id="i-rotate"><g transform="rotate(22 12 14)"><rect x="3.6" y="8.6" width="16.8" height="10.8" rx="2"/></g><path d="M8.6 5.2a8 8 0 0 1 7.4-1.4" stroke-linecap="round"/><polyline points="8.2 1.6 8.2 5.4 11.9 5.8" stroke-linecap="round"/></g>
+  <g id="i-sound"><path d="M4 9.2h3.4L12.6 5v14L7.4 14.8H4z"/><path d="M16 9.4a4 4 0 0 1 0 5.2"/><path d="M18.6 7a7.6 7.6 0 0 1 0 10"/></g>
+  <g id="i-volup"><path d="M4 9.2h3.4L12.6 5v14L7.4 14.8H4z"/><path d="M16.6 12h5.2M19.2 9.4v5.2" stroke-linecap="round"/></g>
+  <g id="i-globe"><circle cx="12" cy="12" r="9.2"/><path d="M2.8 12h18.4"/><path d="M12 2.8a14 14 0 0 1 0 18.4a14 14 0 0 1 0-18.4z"/></g>
+  <g id="i-lock"><rect x="4.4" y="10.4" width="15.2" height="10.4" rx="2.2"/><path d="M8 10.4V7.6a4 4 0 0 1 8 0v2.8"/></g>
+  <g id="i-test"><rect x="4.6" y="3.4" width="14.8" height="17.2" rx="2.2"/><path d="M9 3.4h6v3H9z" fill="currentColor" stroke="none"/><path d="M8.4 11.4h7.2M8.4 15.2h4.8" stroke-linecap="round"/></g>
+  <g id="i-shield"><path d="M12 2.6 4.4 5.8v5.6c0 4.8 3.2 8.6 7.6 10 4.4-1.4 7.6-5.2 7.6-10V5.8z"/><path d="m8.8 12 2.2 2.2 4.2-4.4" stroke-linecap="round"/></g>
+  <g id="i-camera"><rect x="2.6" y="6.4" width="12.6" height="11.2" rx="2.2"/><path d="M15.2 11 21.4 7.6v8.8L15.2 13z"/></g>
+  <g id="i-tune"><path d="M3 8.4h3.6M11.4 8.4H21" stroke-linecap="round"/><circle cx="9" cy="8.4" r="2.4"/><path d="M3 15.6h9.6M17.4 15.6H21" stroke-linecap="round"/><circle cx="15" cy="15.6" r="2.4"/></g>
+  <g id="i-search"><circle cx="10.6" cy="10.6" r="6.8"/><path d="M15.6 15.6 21 21" stroke-linecap="round"/></g>
+</defs></svg>
+
+<header class="masthead">
+  <div class="wrap">
+    <div class="mh-copy">
+      <p class="school">Student Technology Guide</p>
+      <h1>Chromebook Quick Fixes</h1>
+      <p class="tagline">Search your problem, follow the steps. Almost everything here takes less than a minute — try it yourself before you ask for help.</p>
+    </div>
+  </div>
+</header>
+
+<div class="toolbar">
+  <div class="wrap">
+    <div class="searchline">
+      <div class="searchbox">
+        <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" fill="none" aria-hidden="true"><use href="#i-search"/></svg>
+        <label for="q" class="visually-hidden" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">Search the fixes</label>
+        <input id="q" type="search" autocomplete="off" spellcheck="false"
+               placeholder="Search — try “wifi”, “frozen”, “no sound”, “camera”…">
+        <span class="slash" aria-hidden="true"><kbd>/</kbd></span>
+        <button id="clear" type="button" hidden>Clear</button>
+      </div>
+    </div>
+    <div class="chips" role="group" aria-label="Filter by category">
+      <button class="chip" data-cat="all" aria-pressed="true">All fixes</button>
+      <button class="chip" data-cat="everyday" aria-pressed="false">Everyday</button>
+      <button class="chip" data-cat="browser" aria-pressed="false">Browser</button>
+      <button class="chip" data-cat="testing" aria-pressed="false">Testing days</button>
+      <button class="chip" data-cat="hardware" aria-pressed="false">Hardware</button>
+      <span class="count" id="count"></span>
+    </div>
+  </div>
+</div>
+
+<main>
+  <div class="wrap">
+
+    <!-- ===== EVERYDAY ===== -->
+    <section class="section" data-section="everyday">
+      <div class="section-head"><h2>Everyday Fixes</h2><div class="line"></div></div>
+      <div class="cards">
+
+        <article class="fix wide" data-cat="everyday" data-keys="wifi wi-fi internet network power battery charger black screen dead frozen keyboard dead reset restart won't turn on">
+          <div class="fix-head">
+            <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.7" fill="none" stroke-linecap="round" aria-hidden="true"><use href="#i-power"/></svg>
+            <div>
+              <h3>Chromebook won't turn on, won't type, or won't find Wi‑Fi</h3>
+              <p class="sym">Black screen · keys do nothing · no networks listed — all three have the same first fix: a hard reset.</p>
+            </div>
+          </div>
+          <div style="display:grid; grid-template-columns:1fr; gap:16px" class="split">
+            <ol>
+              <li>Hold <kbd><svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#i-refresh"/></svg>Refresh</kbd><span class="plus">+</span><kbd><svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"><use href="#i-power"/></svg>Power</kbd> together for about <b>2 seconds</b>, then let go.</li>
+              <li>The screen should flash and restart. Give it ten seconds.</li>
+              <li>Nothing? Plug in the charger, wait a full minute with it plugged in, then repeat step 1.</li>
+              <li>Still dark after two tries — stop and bring the Chromebook to <b>your tech</b>.</li>
+            </ol>
+            <div class="figure">
+              <svg viewBox="0 0 430 40" fill="none" role="img" aria-label="Chromebook top keyboard row with the Refresh and Power keys highlighted">
+                <g stroke="var(--rule)" stroke-width="1" fill="none">
+                  <rect x="9" y="9" width="26" height="22" rx="4"/><rect x="39" y="9" width="26" height="22" rx="4"/>
+                  <rect x="69" y="9" width="26" height="22" rx="4"/><rect x="133" y="9" width="26" height="22" rx="4"/>
+                  <rect x="163" y="9" width="26" height="22" rx="4"/><rect x="193" y="9" width="26" height="22" rx="4"/>
+                  <rect x="223" y="9" width="26" height="22" rx="4"/><rect x="253" y="9" width="26" height="22" rx="4"/>
+                  <rect x="283" y="9" width="26" height="22" rx="4"/><rect x="313" y="9" width="26" height="22" rx="4"/>
+                  <rect x="343" y="9" width="26" height="22" rx="4"/>
+                </g>
+                <rect x="99" y="6" width="30" height="28" rx="5" fill="none" stroke="var(--accent)" stroke-width="2"/>
+                <rect x="389" y="6" width="32" height="28" rx="5" fill="none" stroke="var(--accent)" stroke-width="2"/>
+                <g stroke="var(--accent)" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                  <g transform="translate(106,12) scale(0.72)"><use href="#i-refresh"/></g>
+                  <g transform="translate(397,12) scale(0.72)"><use href="#i-power"/></g>
+                </g>
+                <g stroke="var(--kbd-edge)" stroke-width="1.3" fill="none" stroke-linecap="round">
+                  <path d="M26 20h-8M22 16l-4 4 4 4"/><path d="M48 20h8M52 16l4 4-4 4"/><path d="M76 14h12v12H76z"/>
+                  <path d="M140 15h12M140 20h12M140 25h12"/>
+                  <path d="M171 20a5 5 0 1 0 10 0 5 5 0 1 0-10 0M176 12v2M176 26v2M168 20h2M182 20h2"/>
+                  <path d="M201 20a5 5 0 1 0 10 0 5 5 0 1 0-10 0M206 11v3M206 26v3M197 20h3M212 20h3M200 14l2 2M210 14l-2 2"/>
+                  <path d="M228 16h3l4-3v14l-4-3h-3zM239 15l6 10M245 15l-6 10"/>
+                  <path d="M258 16h3l4-3v14l-4-3h-3zM269 17a4 4 0 0 1 0 6"/>
+                  <path d="M288 16h3l4-3v14l-4-3h-3zM299 16a4 4 0 0 1 0 8M302 14a7 7 0 0 1 0 12"/>
+                  <path d="M319 14h14M319 20h14M319 26h14"/><path d="M349 14h14v12h-14z"/>
+                </g>
+              </svg>
+              <p class="figcap">Both keys live on the <b>top row</b> of the Chromebook keyboard — Refresh is the circular arrow, Power sits at the far right.</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="fix" data-cat="everyday" data-keys="keyboard language azerty qwerty wrong letters characters typing symbols input method">
+          <div class="fix-head">
+            <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linejoin="round" aria-hidden="true"><use href="#i-keyboard"/></svg>
+            <div>
+              <h3>Keys type the wrong characters</h3>
+              <p class="sym">The keyboard language switched — look for something other than <b>US</b> in the corner.</p>
+            </div>
+          </div>
+          <ol>
+            <li>Press <kbd>Ctrl</kbd><span class="plus">+</span><kbd>Space</kbd> to flip back to the previous language. Test by typing a few letters.</li>
+            <li>Still wrong? Click the <b>clock at the bottom right</b>, then open the keyboard shortcut and pick <b>US</b>.</li>
+          </ol>
+          <div class="shelf">
+            <svg width="112" height="32" viewBox="0 0 106 30" fill="none" role="img" aria-label="The Chrome OS status area showing the clock and the US keyboard indicator">
+              <rect x=".8" y=".8" width="104.4" height="28.4" rx="5" fill="var(--surface-2)" stroke="var(--rule)"/>
+              <text x="11" y="19.5" font-family="IBM Plex Mono, monospace" font-size="10" font-weight="600" fill="var(--fg)">2:45</text>
+              <rect x="46" y="8" width="19" height="14" rx="3" fill="none" stroke="var(--gold-line)" stroke-width="1.4"/>
+              <text x="55.5" y="18.4" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="8" font-weight="600" fill="var(--accent)">US</text>
+              <g stroke="var(--fg-muted)" stroke-width="1.25" fill="none" stroke-linecap="round">
+                <path d="M72 17.5a6.6 6.6 0 0 1 8.4 0M74.4 20.4a3.2 3.2 0 0 1 3.6 0"/>
+                <circle cx="76.2" cy="22.8" r=".65" fill="var(--fg-muted)"/>
+                <rect x="88" y="11" width="12" height="8.4" rx="1.5"/><path d="M101.4 13.6v3.2"/>
+              </g>
+            </svg>
+            <p>The status area sits in the <b>bottom-right corner</b>. Clicking the time opens volume, Wi‑Fi and keyboard settings.</p>
+          </div>
+        </article>
+
+        <article class="fix" data-cat="everyday" data-keys="rotate rotated sideways upside down screen display resolution zoom too big too small magnified">
+          <div class="fix-head">
+            <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linejoin="round" aria-hidden="true"><use href="#i-rotate"/></svg>
+            <div>
+              <h3>The screen is sideways or upside down</h3>
+              <p class="sym">Display rotated 90° or 180°, usually from a stray shortcut.</p>
+            </div>
+          </div>
+          <p class="lead">Press <kbd>Ctrl</kbd><span class="plus">+</span><kbd>Shift</kbd><span class="plus">+</span><kbd><svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#i-refresh"/></svg>Refresh</kbd> and confirm when the box appears. Each press turns the display another quarter turn, so keep pressing until it's upright.</p>
+          <p class="note"><strong>Everything looks huge or tiny?</strong> That's the resolution, not rotation. Press <kbd>Ctrl</kbd><span class="plus">+</span><kbd>Shift</kbd><span class="plus">+</span><kbd>0</kbd> (zero) to put the screen back to its default. If only one website looks wrong, that's page zoom instead — <kbd>Ctrl</kbd><span class="plus">+</span><kbd>0</kbd> resets it.</p>
+        </article>
+
+        <article class="fix wide" data-cat="everyday" data-keys="sound audio volume mute muted speakers headphones no audio can't hear output microphone input">
+          <div class="fix-head">
+            <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><use href="#i-sound"/></svg>
+            <div>
+              <h3>No sound</h3>
+              <p class="sym">Work through these in order — the first one is the answer about nine times out of ten.</p>
+            </div>
+          </div>
+          <ol>
+            <li><b>Check the volume.</b> Click the time at the bottom right, then drag the volume slider up. If the speaker icon has a line through it, click it to unmute.</li>
+            <li><b>Check where the sound is going.</b> Next to the slider, click the arrow <kbd>›</kbd> and choose the right output. Use the same panel to pick your microphone input.</li>
+            <li><b>Unplug anything you've connected.</b> Headphones and speakers keep the sound to themselves — pull them out and test the built-in speakers.</li>
+            <li><b>Check the site itself.</b> Many videos and testing tools have their own mute button and their own volume slider.</li>
+          </ol>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- ===== BROWSER ===== -->
+    <section class="section" data-section="browser">
+      <div class="section-head"><h2>Browser &amp; Websites</h2><div class="line"></div></div>
+      <div class="cards">
+
+        <article class="fix" data-cat="browser" data-keys="cache cookies clear browsing data site won't load extension classlink old version stuck page buttons">
+          <div class="fix-head">
+            <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" fill="none" aria-hidden="true"><use href="#i-globe"/></svg>
+            <div>
+              <h3>A site, tool or extension is acting strange</h3>
+              <p class="sym">Pages won't load, buttons don't respond, or you keep seeing an old version of a page.</p>
+            </div>
+          </div>
+          <ol>
+            <li>Press <kbd>Ctrl</kbd><span class="plus">+</span><kbd>H</kbd> to open your history — or click the <kbd>⋮</kbd> menu at the top right and choose <b>History → History</b>.</li>
+            <li>Click <b>Clear browsing data</b> in the left menu.</li>
+            <li>Set the time range to <b>All time</b>.</li>
+            <li>Check <b>Cookies and other site data</b> and <b>Cached images and files</b>, then click <b>Clear data</b>.</li>
+            <li>Close the tab and open the site again.</li>
+          </ol>
+          <p class="note"><strong>Heads up:</strong> this signs you out of most websites. You'll log back in through ClassLink as usual — no work is deleted.</p>
+        </article>
+
+        <article class="fix" data-cat="browser" data-keys="lockdown browser respondus won't open crashes exam reset chrome settings defaults">
+          <div class="fix-head">
+            <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" fill="none" aria-hidden="true"><use href="#i-lock"/></svg>
+            <div>
+              <h3>LockDown Browser won't open</h3>
+              <p class="sym">It crashes on launch or closes straight away. Resetting Chrome clears the settings blocking it.</p>
+            </div>
+          </div>
+          <ol>
+            <li>Open <b>Chrome</b>.</li>
+            <li>Click the <kbd>⋮</kbd> menu at the top right, then <b>Settings</b>.</li>
+            <li>Choose <b>Reset settings</b> in the left menu.</li>
+            <li>Click <b>Restore settings to their original defaults</b>.</li>
+            <li><b>Uncheck</b> the reporting box, then click <b>Reset settings</b>.</li>
+            <li>Reopen LockDown Browser.</li>
+          </ol>
+          <p class="note">Your bookmarks, history and saved passwords stay. Pinned tabs and extension settings are cleared.</p>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- ===== TESTING ===== -->
+    <section class="section" data-section="testing">
+      <div class="section-head"><h2>Testing Days</h2><div class="line"></div></div>
+      <div class="cards">
+
+        <article class="fix" data-cat="testing" data-keys="testnav frozen won't close stuck exit sol ap test submit force quit">
+          <div class="fix-head">
+            <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" fill="none" aria-hidden="true"><use href="#i-test"/></svg>
+            <div>
+              <h3>TestNav won't close once you're finished</h3>
+              <p class="sym">The test is submitted but TestNav stays on screen and the normal exit does nothing.</p>
+            </div>
+          </div>
+          <ol>
+            <li><b>Submit the test first.</b> Make sure you've reached the confirmation screen — this shortcut closes the app, it doesn't save anything.</li>
+            <li>Hold <kbd>Alt</kbd><span class="plus">+</span><kbd>R</kbd><span class="plus">+</span><kbd><svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#i-volup"/></svg>Vol&nbsp;Up</kbd> together to force TestNav closed.</li>
+            <li><b>Only ever do this once you've finished.</b> Never force-quit, restart or shut down in the middle of a test — raise your hand instead. Closing TestNav before you submit can lock your session.</li>
+          </ol>
+        </article>
+
+        <article class="fix" data-cat="testing" data-keys="securly screen jumps scrolls flickers monitoring extension testing focus teacher">
+          <div class="fix-head">
+            <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linejoin="round" aria-hidden="true"><use href="#i-shield"/></svg>
+            <div>
+              <h3>The screen jumps or scrolls during testing</h3>
+              <p class="sym">The page flickers, scrolls on its own, or keeps pulling focus away from the question.</p>
+            </div>
+          </div>
+          <p class="lead">This one isn't a student fix. The Securly monitoring extension is fighting with the testing software.</p>
+          <ol>
+            <li>Tell your teacher what the screen is doing.</li>
+            <li><b>Teacher:</b> turn Securly off for the class, let the student finish, then turn it back on as soon as testing ends.</li>
+          </ol>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- ===== HARDWARE ===== -->
+    <section class="section" data-section="hardware">
+      <div class="section-head"><h2>Hardware</h2><div class="line"></div></div>
+      <div class="cards">
+
+        <article class="fix wide" data-cat="hardware" data-keys="camera webcam microphone mic permissions site settings allow video call green light meet zoom">
+          <div class="fix-head">
+            <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linejoin="round" aria-hidden="true"><use href="#i-camera"/></svg>
+            <div>
+              <h3>Camera or microphone doesn't work</h3>
+              <p class="sym">Black camera window, no green light, or nobody can hear you on a call.</p>
+            </div>
+          </div>
+          <ol>
+            <li>Open the site that needs the camera — permissions are set per site.</li>
+            <li>In the address bar, click the icon <b>left of the web address</b> — two short lines with a circle on each: <kbd><svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" fill="none"><use href="#i-tune"/></svg></kbd></li>
+            <li>Choose <b>Site settings</b>. Find <b>Camera</b> and <b>Microphone</b> in the permissions list, set both to <b>Allow</b>, then reload the page.</li>
+            <li>Close every other tab or app that might be holding the camera, then reload the page.</li>
+            <li>Do a hard reset: <kbd><svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#i-refresh"/></svg>Refresh</kbd><span class="plus">+</span><kbd><svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"><use href="#i-power"/></svg>Power</kbd> for 2 seconds.</li>
+            <li>Still nothing? It's a hardware issue — <b>see your tech</b>. Don't keep trying settings.</li>
+          </ol>
+        </article>
+
+      </div>
+    </section>
+
+    <div id="empty">
+      <strong>No fix matches that.</strong>
+      <p>Try a plainer word — “sound”, “wifi”, “camera”, “test” — or clear the search to see all nine fixes.</p>
+    </div>
+
+  </div>
+</main>
+
+<section class="shortcuts">
+  <div class="wrap">
+    <h2>Worth Memorizing</h2>
+    <div class="sc-grid">
+      <div class="sc">
+        <div class="ks"><kbd><svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#i-refresh"/></svg>Refresh</kbd><span class="plus">+</span><kbd><svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"><use href="#i-power"/></svg>Power</kbd></div>
+        <span>Hard reset</span>
+      </div>
+      <div class="sc">
+        <div class="ks"><kbd>Ctrl</kbd><span class="plus">+</span><kbd>Space</kbd></div>
+        <span>Keyboard language</span>
+      </div>
+      <div class="sc">
+        <div class="ks"><kbd>Ctrl</kbd><span class="plus">+</span><kbd>Shift</kbd><span class="plus">+</span><kbd><svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#i-refresh"/></svg></kbd></div>
+        <span>Rotate the screen</span>
+      </div>
+      <div class="sc">
+        <div class="ks"><kbd>Ctrl</kbd><span class="plus">+</span><kbd>Shift</kbd><span class="plus">+</span><kbd>0</kbd></div>
+        <span>Reset the resolution</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="help">
+  <div class="wrap">
+    <div class="help-grid">
+      <div>
+        <h2>Still Stuck?</h2>
+        <dl style="margin:0">
+          <div class="who"><dt>Your tech</dt><dd>Camera, microphone, charging, cracked screens, anything physical, and any Chromebook that won't reset.</dd></div>
+          <div class="who"><dt>Your teacher</dt><dd>Anything that happens during a test, and Securly.</dd></div>
+        </dl>
+      </div>
+      <div>
+        <h2>Look It Up Yourself</h2>
+        <ul class="links">
+          <li><a href="https://support.google.com/chromebook/answer/1047364">Chromebook keyboard &amp; shortcuts</a><span>support.google.com/chromebook/answer/1047364</span></li>
+          <li><a href="https://support.google.com/chromebook/answer/6309225">All Chromebook help</a><span>support.google.com/chromebook/answer/6309225</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <span>Student Technology Guide · Chromebook Edition</span>
+    <span class="motto">Try it yourself first</span>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var q = document.getElementById('q');
+  var clearBtn = document.getElementById('clear');
+  var countEl = document.getElementById('count');
+  var empty = document.getElementById('empty');
+  var chips = Array.prototype.slice.call(document.querySelectorAll('.chip'));
+  var sections = Array.prototype.slice.call(document.querySelectorAll('.section'));
+  var cards = Array.prototype.slice.call(document.querySelectorAll('.fix'));
+  var cat = 'all';
+
+  // Build a searchable text blob per card, once.
+  cards.forEach(function(c){
+    var txt = (c.textContent || '') + ' ' + (c.getAttribute('data-keys') || '');
+    c._hay = txt.toLowerCase().replace(/\s+/g,' ');
+  });
+
+  function apply(){
+    var term = q.value.trim().toLowerCase();
+    var words = term ? term.split(/\s+/) : [];
+    var shown = 0;
+
+    cards.forEach(function(c){
+      var okCat = (cat === 'all') || (c.getAttribute('data-cat') === cat);
+      var okTerm = words.every(function(w){ return c._hay.indexOf(w) !== -1; });
+      var on = okCat && okTerm;
+      c.hidden = !on;
+      if (on) shown++;
+    });
+
+    sections.forEach(function(s){
+      var any = s.querySelectorAll('.fix:not([hidden])').length > 0;
+      s.hidden = !any;
+    });
+
+    empty.classList.toggle('on', shown === 0);
+    countEl.textContent = shown === cards.length
+      ? cards.length + ' fixes'
+      : shown + ' of ' + cards.length;
+    clearBtn.hidden = term === '';
+    document.querySelector('.slash').style.display = term === '' ? '' : 'none';
+  }
+
+  q.addEventListener('input', apply);
+  q.addEventListener('keydown', function(e){
+    if (e.key === 'Escape'){ q.value = ''; apply(); }
+  });
+  clearBtn.addEventListener('click', function(){ q.value=''; apply(); q.focus(); });
+
+  chips.forEach(function(ch){
+    ch.addEventListener('click', function(){
+      cat = ch.getAttribute('data-cat');
+      chips.forEach(function(o){ o.setAttribute('aria-pressed', String(o === ch)); });
+      apply();
+    });
+  });
+
+  document.addEventListener('keydown', function(e){
+    if (e.key === '/' && document.activeElement !== q){
+      var t = e.target.tagName;
+      if (t === 'INPUT' || t === 'TEXTAREA') return;
+      e.preventDefault(); q.focus(); q.select();
+    }
+  });
+
+  apply();
+})();
+</script>
+
+</body></html>
